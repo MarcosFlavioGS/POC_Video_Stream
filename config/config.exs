@@ -21,6 +21,14 @@ config :video_streaming_poc, VideoStreamingPocWeb.Endpoint,
   pubsub_server: VideoStreamingPoc.PubSub,
   live_view: [signing_salt: "tq5iT9kK"]
 
+config :waffle,
+  storage: Waffle.Storage.S3,
+  bucket: "video-stream-poc-elixir ",
+  asset_host: "arn:aws:s3:::video-stream-poc-elixir"
+
+config :ex_aws,
+  json_codec: Jason
+
 # Configures the mailer
 #
 # By default it uses the "Local" adapter which stores the emails

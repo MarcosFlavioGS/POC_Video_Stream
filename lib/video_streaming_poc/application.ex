@@ -9,7 +9,8 @@ defmodule VideoStreamingPoc.Application do
   def start(_type, _args) do
     children = [
       VideoStreamingPocWeb.Telemetry,
-      {DNSCluster, query: Application.get_env(:video_streaming_poc, :dns_cluster_query) || :ignore},
+      {DNSCluster,
+       query: Application.get_env(:video_streaming_poc, :dns_cluster_query) || :ignore},
       {Phoenix.PubSub, name: VideoStreamingPoc.PubSub},
       # Start the Finch HTTP client for sending emails
       {Finch, name: VideoStreamingPoc.Finch},

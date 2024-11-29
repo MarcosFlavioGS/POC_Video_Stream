@@ -8,7 +8,7 @@ defmodule VideoStreamingPocWeb.Router do
   scope "/api", VideoStreamingPocWeb do
     pipe_through :api
 
-    post "/upload", Files.UploadFileController, :updload
+    post "/upload", Files.FileController, :upload
   end
 
   # Enable LiveDashboard and Swoosh mailbox preview in development
