@@ -23,11 +23,13 @@ config :video_streaming_poc, VideoStreamingPocWeb.Endpoint,
 
 config :waffle,
   storage: Waffle.Storage.S3,
-  bucket: "video-stream-poc-elixir ",
-  asset_host: "arn:aws:s3:::video-stream-poc-elixir"
+  bucket: {:system, "BUCKET_NAME"},
+  asset_host: {:system, "ACCESS_HOST"}
 
 config :ex_aws,
-  json_codec: Jason
+  json_codec: Jason,
+  access_key_id: [{:system, "AWS_ACCESS_KEY"}, :instance_role],
+  secret_access_key: [{:system, "AWS_SECRET_ACCESS_KEY"}, :instance_role]
 
 # Configures the mailer
 #
