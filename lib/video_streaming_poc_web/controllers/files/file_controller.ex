@@ -10,7 +10,8 @@ defmodule VideoStreamingPocWeb.Files.FileController do
       |> put_status(:ok)
       |> json(%{message: "file uploaded", filename: file.filename})
     else
-      _ ->
+      {:error, message} ->
+        IO.inspect(message)
         conn
         |> put_status(:bad_request)
         |> json(%{message: "error sending file to S3"})

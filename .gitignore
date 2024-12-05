@@ -35,3 +35,4 @@ video_streaming_poc-*.tar
 npm-debug.log
 /assets/node_modules/
 
+.env

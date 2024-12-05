@@ -23,14 +23,14 @@ config :video_streaming_poc, VideoStreamingPocWeb.Endpoint,
 
 config :waffle,
   storage: Waffle.Storage.S3,
-  bucket: {:system, "BUCKET_NAME"},
+  bucket: {:system, "BUCKET"},
   asset_host: {:system, "ACCESS_HOST"}
 
 config :ex_aws,
   json_codec: Jason,
-  access_key_id: [{:system, "AWS_ACCESS_KEY"}, :instance_role],
-  secret_access_key: [{:system, "AWS_SECRET_ACCESS_KEY"}, :instance_role]
-
+  access_key_id: [{:system, "AWS_ACCESS_KEY"}, {:awscli, "default", 30}, :instance_role],
+  secret_access_key: [{:awscli, "default", 30}, :instance_role],
+  region: {:system, "AWS_REGION"}
 # Configures the mailer
 #
 # By default it uses the "Local" adapter which stores the emails

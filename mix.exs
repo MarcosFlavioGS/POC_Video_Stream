@@ -52,11 +52,12 @@ defmodule VideoStreamingPoc.MixProject do
       {:jason, "~> 1.2"},
       {:dns_cluster, "~> 0.1.1"},
       {:bandit, "~> 1.5"},
-      {:waffle, "~> 1.1"},
+      {:waffle, "~> 1.1.9"},
       {:ex_aws, "~> 2.1.2"},
       {:ex_aws_s3, "~> 2.0"},
       {:hackney, "~> 1.9"},
-      {:sweet_xml, "~> 0.6"}
+      {:sweet_xml, "~> 0.6"},
+      {:configparser_ex, "~> 4.0"}
     ]
   end
 

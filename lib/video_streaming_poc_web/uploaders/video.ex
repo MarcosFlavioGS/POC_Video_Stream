@@ -7,8 +7,7 @@ defmodule VideoStreamingPoc.Video do
   # @versions [:original]
 
   # To add a thumbnail version:
-  @versions [:original, :thumb]
-  @extension_whitelist ~w(.jpg .jpeg .gif .png .mp4)
+  # @versions [:original, :thumb]
 
   # Override the bucket on a per definition basis:
   # def bucket do
@@ -20,41 +19,29 @@ defmodule VideoStreamingPoc.Video do
   # end
 
   # Whitelist file extensions:
+  @versions [:original, :thumb]
+  @extension_whitelist ~w(.jpg .jpeg .gif .png .mp4)
+
+  def acl(:thumb, _), do: :public_read
+
   def validate({file, _}) do
-    file_extension = file.file_name |> Path.extname() |> String.downcase()
-
-    case Enum.member?(@extension_whitelist, file_extension) do
-      true -> :ok
-      false -> {:error, "invalid file type"}
-    end
+    file_extension = file.file_name |> Path.extname |> String.downcase
+    Enum.member?(@extension_whitelist, file_extension)
   end
 
-  # Define a thumbnail transformation:
-  def transform(:thumb, _) do
-    {:convert, "-strip -thumbnail 250x250^ -gravity center -extent 250x250 -format png", :png}
-  end
+  # def transform(:thumb, _) do
+  #   {:convert, "-thumbnail 100x100^ -gravity center -extent 100x100 -format png", :png}
+  # end
 
-  # Override the persisted filenames:
   def filename(version, _) do
     version
   end
 
-  # Override the storage directory:
-  def storage_dir(version, {file, scope}) do
-    "uploads/user/avatars/#{scope.id}"
-  end
-
-  # Provide a default URL if there hasn't been a file uploaded
-  # def default_url(version, scope) do
-  #   "/images/avatars/default_#{version}.png"
+  # def storage_dir(_, {file, user}) do
+  #   "uploads/video/#{user.id}"
   # end
 
-  # Specify custom headers for s3 objects
-  # Available options are [:cache_control, :content_disposition,
-  #    :content_encoding, :content_length, :content_type,
-  #    :expect, :expires, :storage_class, :website_redirect_location]
-
-  def s3_object_headers(version, {file, scope}) do
-    [content_type: MIME.from_path(file.file_name)]
+  def default_url(:thumb) do
+    "https://placehold.it/100x100"
   end
 end
