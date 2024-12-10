@@ -13,6 +13,7 @@ defmodule VideoStreamingPocWeb.Stream.StreamController do
 
     case Conn.get_req_header(conn, "range") do
       ["bytes=" <> range] ->
+        IO.inspect(range, label: "Range header")
         conn = handle_range_request(conn, range, body, total_size)
         conn
 
@@ -39,8 +40,7 @@ defmodule VideoStreamingPocWeb.Stream.StreamController do
     |> Conn.put_resp_header("content-disposition", "inline; filename=\"video.mp4\"")
     |> Conn.put_resp_header("accept-ranges", "bytes")
     |> Conn.put_resp_header("content-range", "bytes #{start}-#{finish}/#{total_size}")
-    |> Conn.send_chunked(206)
-    |> stream_data(partial_content)
+    |> Conn.send_resp(206, partial_content) # send_resp instead of send_chunked
   end
 
   defp parse_range(range, total_size) do

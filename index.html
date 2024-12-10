@@ -1,0 +1,38 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Video Streaming Test</title>
+</head>
+<body>
+  <h1>Video Streaming Test</h1>
+  <video id="videoPlayer" controls width="640" height="360">
+    <source id="videoSource" src="http://localhost:4000/api/stream/A cor do pecado(filme) - 480P.mp4" type="video/mp4">
+    Your browser does not support the video tag.
+  </video>
+
+  <script>
+    document.addEventListener("DOMContentLoaded", () => {
+      const videoPlayer = document.getElementById("videoPlayer");
+
+      // Check if the browser supports Range requests
+      if (!("range" in videoPlayer)) {
+        console.warn("Range requests may not be supported in this browser.");
+      }
+
+      videoPlayer.addEventListener("error", (event) => {
+        console.error("Error loading video:", event);
+      });
+
+      videoPlayer.addEventListener("loadedmetadata", () => {
+        console.log("Video metadata loaded.");
+      });
+
+      videoPlayer.addEventListener("play", () => {
+        console.log("Playback started.");
+      });
+    });
+  </script>
+</body>
+</html>
