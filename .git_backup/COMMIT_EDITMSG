@@ -1,0 +1,19 @@
+fix: S3 upload functional
+
+# Please enter the commit message for your changes. Lines starting
+# with '#' will be ignored, and an empty message aborts the commit.
+#
+# On branch main
+# Your branch is up to date with 'origin/main'.
+#
+# Changes to be committed:
+#	modified:   .gitignore
+#	modified:   config/config.exs
+#	modified:   lib/video_streaming_poc_web/controllers/files/file_controller.ex
+#	modified:   lib/video_streaming_poc_web/uploaders/video.ex
+#	modified:   mix.exs
+#	modified:   mix.lock
+#
+# Changes not staged for commit:
+#	modified:   .env
+#
