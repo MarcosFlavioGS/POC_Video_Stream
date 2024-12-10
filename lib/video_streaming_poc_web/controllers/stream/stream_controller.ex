@@ -3,17 +3,12 @@ defmodule VideoStreamingPocWeb.Stream.StreamController do
 
   use VideoStreamingPocWeb, :controller
 
-  alias ExAws.S3
+  alias VideoStreamingPoc.File.Get
   alias Plug.Conn
 
   def stream(conn, %{"filename" => filename}) do
-    bucket = "your-s3-bucket"
-    path = "videos/#{filename}"
+    {:ok, body} = Get.get_file(filename)
 
-    # Retrieve the video file from S3
-    {:ok, response} = S3.get_object(bucket, path) |> ExAws.request()
-
-    # Set the appropriate headers
     conn =
       conn
       |> Conn.put_resp_content_type("video/mp4")
@@ -22,18 +17,18 @@ defmodule VideoStreamingPocWeb.Stream.StreamController do
       |> Conn.send_chunked(200)
 
     # Stream the video file to the client
-    stream_data(conn, response.body)
+    stream_data(conn, body)
   end
 
   defp stream_data(conn, data) do
-    chunk_size = 65_536 # 64 KB chunks
+    # 64 KB chunks
+    chunk_size = 65_536
 
-    # Chunk the binary data and send each chunk
     data
     |> chunk_binary(chunk_size)
     |> Enum.reduce_while(conn, fn chunk, conn ->
       case Conn.chunk(conn, chunk) do
-        :ok -> {:cont, conn}
+        {:ok, conn} -> {:cont, conn}
         {:error, _reason} -> {:halt, conn}
       end
     end)
@@ -41,7 +36,10 @@ defmodule VideoStreamingPocWeb.Stream.StreamController do
 
   # This function chunks the binary data
   defp chunk_binary(binary, chunk_size) do
-    binary
-    |> Stream.chunk_every(chunk_size, chunk_size, :discard)
+    Stream.unfold(binary, fn
+      <<chunk::binary-size(chunk_size), rest::binary>> -> {chunk, rest}
+      <<rest::binary>> when byte_size(rest) > 0 -> {rest, <<>>}
+      <<>> -> nil
+    end)
   end
 end
