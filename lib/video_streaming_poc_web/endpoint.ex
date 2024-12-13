@@ -20,7 +20,7 @@ defmodule VideoStreamingPocWeb.Endpoint do
   # You should set gzip to true if you are running phx.digest
   # when deploying your static files in production.
   plug Plug.Static,
-    at: "/",
+    at: "/streams",
     from: :video_streaming_poc,
     gzip: false,
     only: VideoStreamingPocWeb.static_paths()

@@ -9,7 +9,10 @@ defmodule VideoStreamingPocWeb.Router do
     pipe_through :api
 
     post "/upload", Files.FileController, :upload
+
     get "/stream/:filename", Stream.StreamController, :stream
+    get "/:key/index.m3u8", Stream.LiveStreamController, :playlist
+    post "/start/:key", Stream.LiveStreamController, :start
   end
 
   # Enable LiveDashboard and Swoosh mailbox preview in development
