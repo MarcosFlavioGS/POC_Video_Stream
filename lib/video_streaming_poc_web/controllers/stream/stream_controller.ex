@@ -7,7 +7,8 @@ defmodule VideoStreamingPocWeb.Stream.StreamController do
   alias Plug.Conn
 
   def stream(conn, %{"filename" => filename}) do
-    {:ok, body} = Get.get_file(filename) # Get file from the S# Bucket
+    # Get file from the S# Bucket
+    {:ok, body} = Get.get_file(filename)
     total_size = byte_size(body)
     IO.inspect(total_size, label: "Total Size")
 
@@ -40,7 +41,8 @@ defmodule VideoStreamingPocWeb.Stream.StreamController do
     |> Conn.put_resp_header("content-disposition", "inline; filename=\"video.mp4\"")
     |> Conn.put_resp_header("accept-ranges", "bytes")
     |> Conn.put_resp_header("content-range", "bytes #{start}-#{finish}/#{total_size}")
-    |> Conn.send_resp(206, partial_content) # send_resp for partial content
+    # send_resp for partial content
+    |> Conn.send_resp(206, partial_content)
   end
 
   defp parse_range(range, total_size) do
@@ -50,6 +52,7 @@ defmodule VideoStreamingPocWeb.Stream.StreamController do
       |> Enum.map(&String.trim/1)
 
     start = String.to_integer(start_str)
+
     finish =
       case finish_str do
         "" -> total_size - 1

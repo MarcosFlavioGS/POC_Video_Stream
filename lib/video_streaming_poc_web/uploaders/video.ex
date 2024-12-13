@@ -25,7 +25,7 @@ defmodule VideoStreamingPoc.Video do
   def acl(:thumb, _), do: :public_read
 
   def validate({file, _}) do
-    file_extension = file.file_name |> Path.extname |> String.downcase
+    file_extension = file.file_name |> Path.extname() |> String.downcase()
     Enum.member?(@extension_whitelist, file_extension)
   end
 

@@ -31,6 +31,7 @@ config :ex_aws,
   access_key_id: [{:system, "AWS_ACCESS_KEY"}, {:awscli, "default", 30}, :instance_role],
   secret_access_key: [{:awscli, "default", 30}, :instance_role],
   region: {:system, "AWS_REGION"}
+
 # Configures the mailer
 #
 # By default it uses the "Local" adapter which stores the emails
