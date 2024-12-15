@@ -32,6 +32,7 @@ defmodule VideoStreamingPoc.MixProject do
   # Type `mix help deps` for examples and options.
   defp deps do
     [
+      {:credo, "~> 1.7", only: [:dev, :test], runtime: false},
       {:dotenv, "~> 3.0"},
       {:phoenix, "~> 1.7.14"},
       {:phoenix_live_dashboard, "~> 0.8.3"},

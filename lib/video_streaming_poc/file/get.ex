@@ -5,8 +5,7 @@ defmodule VideoStreamingPoc.File.Get do
   alias ExAws.S3
 
   def get_url(file) do
-    file = Video.url(file, :original)
-    IO.inspect(file)
+    Video.url(file, :original)
   end
 
   def get_file(file_key) do

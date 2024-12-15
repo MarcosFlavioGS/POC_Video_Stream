@@ -10,11 +10,11 @@ defmodule VideoStreamingPocWeb.Stream.StreamController do
     # Get file from the S# Bucket
     {:ok, body} = Get.get_file(filename)
     total_size = byte_size(body)
-    IO.inspect(total_size, label: "Total Size")
+    IO.puts("Total size: #{total_size}")
 
     case Conn.get_req_header(conn, "range") do
       ["bytes=" <> range] ->
-        IO.inspect(range, label: "Range header")
+        IO.puts("Range header: #{range}")
         conn = handle_range_request(conn, range, body, total_size)
         conn
 
