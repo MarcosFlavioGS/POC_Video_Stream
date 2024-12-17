@@ -23,7 +23,7 @@ defmodule VideoStreamingPocWeb.Endpoint do
     at: "/streams",
     from: :video_streaming_poc,
     gzip: false,
-    only: VideoStreamingPocWeb.static_paths()
+    only: ~w(streams)
 
   plug Plug.Parsers,
     parsers: [:urlencoded, :multipart, :json],
