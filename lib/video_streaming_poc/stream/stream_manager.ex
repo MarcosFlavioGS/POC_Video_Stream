@@ -1,24 +1,23 @@
 defmodule VideoStreamingPoc.Stream.StreamManager do
   @moduledoc false
 
-  require Logger
+  def save_index(body, stream_key) do
+  path = Path.join(["priv/static/streams", stream_key, "index.m3u8"])
 
-  def end_stream(stream_id) do
-    # Your logic to finalize the stream goes here
+	File.mkdir_p!(Path.dirname(path))
+	File.write!(path, body)
 
-    # Determine the directory path
-    stream_path = Path.join(["priv", "static", "streams", stream_id])
-
-    # Call cleanup
-    cleanup_stream_files(stream_path)
+  IO.puts("Index.m3u8 saved in /streams/#{stream_key}")
+  {:ok, "Index saved"}
   end
 
-  defp cleanup_stream_files(stream_path) do
-    if File.exists?(stream_path) do
-      File.rm_rf!(stream_path)
-      Logger.info("Deleted stream files and folder at #{stream_path}")
-    else
-      Logger.warning("Stream path not found: #{stream_path}")
-    end
+  def save_ts(body, stream_key, file_name) do
+  	path = Path.join(["priv/static/streams", stream_key, file_name])
+
+    File.mkdir_p!(Path.dirname(path))
+    File.write!(path, body)
+
+    IO.puts("#{file_name} file uploaded to /streams/#{stream_key}")
+    {:ok, "TS saved"}
   end
 end

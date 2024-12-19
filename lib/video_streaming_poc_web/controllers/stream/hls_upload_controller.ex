@@ -1,25 +1,31 @@
 defmodule VideoStreamingPocWeb.Stream.HlsUploadController do
-  @moduledoc false
+  @moduledoc """
+  Module to receive streaming files.
+  """
 
   use VideoStreamingPocWeb, :controller
 
-  def m3u8_upload(conn, %{"key" => stream_key}) do
-	{:ok, body, _} = Plug.Conn.read_body(conn)
+  alias VideoStreamingPoc.Stream.StreamManager
 
-	path = Path.join(["priv/static/streams", stream_key, "index.m3u8"])
-	File.mkdir_p!(Path.dirname(path))
-	File.write!(path, body)
+  @doc """
+  Gets the index.m3u8 file and upload any existing index in path or save new.
+  """
+  def m3u8_upload(conn, %{"key" => stream_key, "file_name" => _file_name}) do
+    {:ok, body, _} = Plug.Conn.read_body(conn)
 
-	send_resp(conn, 200, "m3u8 file uploaded")
+    with {:ok, _message} <- StreamManager.save_index(body, stream_key) do
+      send_resp(conn, 400, "Error uploading m3u8 file")
+    end
   end
 
+  @doc """
+  Uploads .ts files to path.
+  """
   def ts_upload(conn, %{"key" => stream_key, "file_name" => file_name}) do
-  {:ok, body, _} = Plug.Conn.read_body(conn)
+    {:ok, body, _} = Plug.Conn.read_body(conn)
 
-  path = Path.join(["priv/static/streams", stream_key, file_name])
-  File.mkdir_p!(Path.dirname(path))
-  File.write!(path, body)
-
-  send_resp(conn, 200, "TS file uploaded")
+    with {:ok, _message} <- StreamManager.save_ts(body, stream_key, file_name) do
+      send_resp(conn, 200, "TS file uploaded")
+    end
   end
 end

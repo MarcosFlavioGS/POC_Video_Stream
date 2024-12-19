@@ -3,6 +3,9 @@ defmodule VideoStreamingPoc.StreamProcessor do
 
   @output_dir "priv/static/streams"
 
+  @doc """
+  Starts stream from a local video file.
+  """
   def start_stream(input_url, stream_key) do
     output_path = Path.join(@output_dir, stream_key)
 
