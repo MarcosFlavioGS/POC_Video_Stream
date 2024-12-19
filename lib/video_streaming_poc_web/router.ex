@@ -11,9 +11,11 @@ defmodule VideoStreamingPocWeb.Router do
     post "/upload", Files.FileController, :upload
 
     get "/stream/:filename", Stream.StreamController, :stream
-    get "/stream/:key/index.m3u8", Stream.LiveStreamController, :playlist
     post "/stream/start/:key", Stream.LiveStreamController, :start
+
+    get "/stream/:key/index.m3u8", Stream.LiveStreamController, :playlist
     get "/stream/:key/:file_name", Stream.LiveStreamController, :serve_ts_file
+
     put "/stream/m3u8/:key/:file_name", Stream.HlsUploadController, :m3u8_upload
     put "/stream/ts/:key/:file_name", Stream.HlsUploadController, :ts_upload
   end

@@ -25,7 +25,7 @@ defmodule VideoStreamingPocWeb.Stream.LiveStreamController do
   end
 
   @doc """
-  Serves the playlist file.
+  Serves the playlist file of a livestream or video on demand.
   """
   def playlist(conn, %{"key" => stream_key}) do
     playlist_path = Path.join(["priv/static/streams", stream_key, "index.m3u8"])
@@ -38,7 +38,7 @@ defmodule VideoStreamingPocWeb.Stream.LiveStreamController do
   end
 
   @doc """
-  Serve the .ts files
+  Serve the .ts files of livestreams or on demand videos.
   """
   def serve_ts_file(conn, %{"key" => key, "file_name" => file_name}) do
     stream_path = Path.join(["priv/static/streams", key, file_name])
