@@ -15,7 +15,7 @@ defmodule VideoStreamingPocWeb.Files.FileController do
       {:error, message} ->
         conn
         |> put_status(:bad_request)
-        |> json(%{message: "error sending file to S3"})
+        |> json(%{message: "error sending file to S3: #{message}"})
     end
   end
 end
