@@ -1,10 +1,18 @@
 defmodule VideoStreamingPocWeb.Stream.LiveStreamController do
-  @moduledoc false
+  @moduledoc """
+  Module to receive and stream video chuncks
+
+  """
 
   use VideoStreamingPocWeb, :controller
 
   alias VideoStreamingPoc.StreamProcessor
 
+  @doc """
+  Streams local or S3 file.
+
+  Receives the stream_key = name of the stream and the url or filepath to the video.
+  """
   def start(conn, %{"key" => stream_key, "input_url" => input_url}) do
     if input_url do
       IO.puts("Stream started")
@@ -16,6 +24,9 @@ defmodule VideoStreamingPocWeb.Stream.LiveStreamController do
     end
   end
 
+  @doc """
+  Serves the playlist file.
+  """
   def playlist(conn, %{"key" => stream_key}) do
     playlist_path = Path.join(["priv/static/streams", stream_key, "index.m3u8"])
 
@@ -26,6 +37,9 @@ defmodule VideoStreamingPocWeb.Stream.LiveStreamController do
     end
   end
 
+  @doc """
+  Serve the .ts files
+  """
   def serve_ts_file(conn, %{"key" => key, "file_name" => file_name}) do
     stream_path = Path.join(["priv/static/streams", key, file_name])
 

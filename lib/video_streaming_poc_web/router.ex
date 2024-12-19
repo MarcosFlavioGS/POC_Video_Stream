@@ -14,6 +14,8 @@ defmodule VideoStreamingPocWeb.Router do
     get "/stream/:key/index.m3u8", Stream.LiveStreamController, :playlist
     post "/stream/start/:key", Stream.LiveStreamController, :start
     get "/stream/:key/:file_name", Stream.LiveStreamController, :serve_ts_file
+    post "/stream/m3u8/:key", Stream.HlsUploadController, :m3u8_upload
+    post "/stream/ts/:key/:file_name", Stream.HlsUploadController, :ts_upload
   end
 
   # Enable LiveDashboard and Swoosh mailbox preview in development
