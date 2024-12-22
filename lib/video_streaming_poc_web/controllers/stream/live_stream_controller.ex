@@ -1,6 +1,6 @@
 defmodule VideoStreamingPocWeb.Stream.LiveStreamController do
   @moduledoc """
-  Module to receive and stream video chunks.
+  Module for all streaming endpoints. Both starting the stream and serving the HLS files.
   """
 
   use VideoStreamingPocWeb, :controller

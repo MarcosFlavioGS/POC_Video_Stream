@@ -1,6 +1,6 @@
 defmodule VideoStreamingPocWeb.Stream.HlsUploadController do
   @moduledoc """
-  Module to receive streaming files.
+  Module to receive live streaming files.
   """
 
   use VideoStreamingPocWeb, :controller
@@ -8,7 +8,7 @@ defmodule VideoStreamingPocWeb.Stream.HlsUploadController do
   alias VideoStreamingPoc.Stream.StreamManager
 
   @doc """
-  Gets the index.m3u8 file and upload any existing index in path or save new.
+  Gets the index.m3u8 file to save or upload any existing index in path.
   """
   def m3u8_upload(conn, %{"key" => stream_key, "file_name" => _file_name}) do
     {:ok, body, _} = Plug.Conn.read_body(conn)
