@@ -1,26 +1,33 @@
 defmodule VideoStreamingPocWeb.Stream.LiveStreamController do
   @moduledoc """
-  Module to receive and stream video chuncks
-
+  Module to receive and stream video chunks.
   """
 
   use VideoStreamingPocWeb, :controller
 
   alias VideoStreamingPoc.StreamProcessor
+  alias VideoStreamingPoc.File.Get
 
   @doc """
   Streams local or S3 file.
 
-  Receives the stream_key = name of the stream and the url or filepath to the video.
+  Receives the stream_key = name of the stream and the file_key to the S3 object.
   """
-  def start(conn, %{"key" => stream_key, "input_url" => input_url}) do
-    if input_url do
+  def start(conn, %{"key" => stream_key, "file_key" => file_key}) do
+    with {:ok, file_content} <- Get.get_file(file_key),
+         temp_file_path <- "/tmp/#{stream_key}.mp4",
+         :ok <- File.write(temp_file_path, file_content) do
       IO.puts("Stream started")
-      StreamProcessor.start_stream(input_url, stream_key)
+      StreamProcessor.start_stream(temp_file_path, stream_key)
       send_resp(conn, 200, "Stream started")
     else
-      IO.puts("Missing input_url")
-      send_resp(conn, 400, "Missing input_url")
+      {:error, reason} ->
+        IO.puts("Error retrieving file: #{inspect(reason)}")
+        send_resp(conn, 500, "Error retrieving file")
+
+      error ->
+        IO.puts("Unexpected error: #{inspect(error)}")
+        send_resp(conn, 500, "Unexpected error")
     end
   end
 
