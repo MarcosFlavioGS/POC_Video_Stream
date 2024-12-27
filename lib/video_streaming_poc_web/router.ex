@@ -5,12 +5,21 @@ defmodule VideoStreamingPocWeb.Router do
     plug :accepts, ["json"]
   end
 
+  pipeline :hls do
+    plug :accepts, ["json"]
+    plug Corsica, origins: "http://localhost:4000/api/"
+  end
+
   scope "/api", VideoStreamingPocWeb do
     pipe_through :api
 
     post "/upload", Files.FileController, :upload
 
     post "/stream/start/", Stream.LiveStreamController, :start
+  end
+
+  scope "/hls", VideoStreamingPocWeb do
+    pipe_through :hls
 
     get "/stream/:key/index.m3u8", Stream.LiveStreamController, :playlist
     get "/stream/:key/:file_name", Stream.LiveStreamController, :serve_ts_file

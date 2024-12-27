@@ -32,6 +32,7 @@ defmodule VideoStreamingPoc.MixProject do
   # Type `mix help deps` for examples and options.
   defp deps do
     [
+      {:corsica, "~> 1.1.3"},
       {:credo, "~> 1.7", only: [:dev, :test], runtime: false},
       {:dotenv, "~> 3.0"},
       {:phoenix, "~> 1.7.14"},
