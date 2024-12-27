@@ -29,7 +29,10 @@ defmodule VideoStreamingPocWeb.Endpoint do
     parsers: [:urlencoded, :multipart, :json],
     pass: ["*/*"],
     json_decoder: Phoenix.json_library(),
-    length: 100_000_000
+    length: 1_000_000_000
+
+  plug Corsica,
+    origins: ["http://localhost:4000/"]
 
   # Code reloading can be explicitly enabled under the
   # :code_reloader configuration of your endpoint.
